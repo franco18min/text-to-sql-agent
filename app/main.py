@@ -99,7 +99,7 @@ def _spark_column_to_http(col: dict) -> dict:
 
 # ----- Schema (inline, simple) -----
 @app.get("/schema", response_model=SchemaResponse, tags=["meta"])
-async def get_schema():
+def get_schema():
     """
     Devuelve el schema de samples.tpch (o el catalog/schema configurado).
     Usa SHOW TABLES + DESCRIBE TABLE — no information_schema, que no ve

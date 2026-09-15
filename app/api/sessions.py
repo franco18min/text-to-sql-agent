@@ -89,7 +89,7 @@ async def create_session():
 
 
 @router.get("", response_model=SessionsListResponse)
-async def list_sessions(
+def list_sessions(
     limit: int = Query(default=20, ge=1, le=200, description="Cantidad máxima de sessions a devolver"),
 ):
     """Lista las sessions más recientes (ordenadas por última actividad)."""
@@ -105,7 +105,7 @@ async def list_sessions(
 
 
 @router.get("/{session_id}", response_model=SessionHistoryResponse)
-async def get_session_history(
+def get_session_history(
     session_id: str,
     limit: int = Query(default=50, ge=1, le=500),
 ):
@@ -119,7 +119,7 @@ async def get_session_history(
 
 
 @router.delete("/{session_id}", response_model=SessionActionResponse)
-async def delete_session(session_id: str):
+def delete_session(session_id: str):
     """Borra todos los turns de una session."""
     affected = clear_session(session_id)
     return SessionActionResponse(

@@ -45,12 +45,13 @@ def _ping_llm() -> tuple[bool, str | None]:
 
 
 @router.get("/health", response_model=HealthResponse)
-async def health(
+def health(
     deep: bool = Query(default=False, description="Si true, pingea Databricks y el LLM"),
     skip_llm: bool = Query(default=False, description="Saltea el ping al LLM (útil en CI)"),
 ):
     """
-    Health check rápido.
+    Health check. Sync on purpose: Databricks/LLM pings are blocking I/O
+    and must not stall the FastAPI event loop.
 
     - Sin `deep=true`: solo valida que las env vars estén bien.
     - Con `deep=true`: pingea Databricks (SELECT 1) y el LLM (1 token).

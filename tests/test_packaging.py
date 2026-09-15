@@ -27,6 +27,15 @@ def test_ci_uses_editable_dev_install():
     assert 'pip install -e ".[dev]"' in text
 
 
+def test_runtime_pins_do_not_include_unpublished_langchain_google_genai_1_0_0():
+    """PyPI never published 1.0.0 (0.0.11 then 1.0.1); CI pip install -e .[dev] fails."""
+    for rel in ("pyproject.toml", "requirements.txt"):
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        assert "langchain-google-genai==1.0.0" not in text, (
+            f"{rel} pins langchain-google-genai==1.0.0 which is not on PyPI"
+        )
+
+
 def test_run_tests_wrapper_has_no_timeout_flag():
     text = (ROOT / "run_tests.py").read_text(encoding="utf-8")
     assert "--timeout=15" not in text

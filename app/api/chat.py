@@ -69,13 +69,16 @@ def _run_agent_or_503(question: str, session_id: str) -> dict[str, Any]:
 # Endpoint --------------------------------------------------------------------
 
 @router.post("/query", response_model=AgentResponse)
-async def post_query(request: QueryRequest):
+def post_query(request: QueryRequest):
     """
     Procesa una pregunta en lenguaje natural y devuelve:
     - answer (lenguaje natural)
     - sql_query (si include_sql=true)
     - results (filas, truncadas a max_rows)
     - metadata: intent, schema_source, validation_status, retry_count, latency_ms
+
+    Sync on purpose: `run_agent` is blocking (LLM + Databricks) and must
+    run in the FastAPI threadpool instead of the event loop.
 
     Si el cliente no manda session_id, se genera uno nuevo (UUID4).
     """
