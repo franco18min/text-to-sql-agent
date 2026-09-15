@@ -5,7 +5,7 @@
 ![Status](https://img.shields.io/badge/status-portfolio--ready-success)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.11+-green)
-![Tests](https://img.shields.io/badge/tests-184%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-185%20passing-brightgreen)
 ![Eval](https://img.shields.io/badge/eval-30Q%20%2F%20100%25%20accuracy-blue)
 ![Cost](https://img.shields.io/badge/cost-USD_0-brightgreen)
 ![LangGraph](https://img.shields.io/badge/LangGraph-0.2-purple)
@@ -19,7 +19,7 @@
 - **100% (30/30)** execution accuracy con los 3 prompt fixes aplicados
 - **100% execution success** (todas las queries que genera el agente ejecutan sin error)
 - Latency p50: **25s**, p95: **76s** (con Gemini free tier, 25 RPM)
-- 184 tests pytest pasando en ~3s (sin credenciales necesarias, todo mockeado)
+- 185 tests pytest pasando en ~3s (sin credenciales necesarias, todo mockeado)
 - Costo de inferencia: **USD 0** (Gemini free tier + Databricks Free Edition)
 - Version **1.0.0**
 - Repo: [github.com/franco18min/text-to-sql-agent](https://github.com/franco18min/text-to-sql-agent) (codigo; no es una demo live)
@@ -103,7 +103,7 @@ Historia del eval (snapshot **historico**, no current): 83% (run inicial con bug
 | **Agentic AI** | State machine de LangGraph con ciclos de auto-correccion (si el SQL falla, vuelve al generador con el error) |
 | **LLM engineering** | Prompts por nodo, retries exponenciales, degradacion graceful si la API falla |
 | **Data engineering** | Schema retrieval sobre Databricks con `SHOW TABLES` + `DESCRIBE`, queries validadas antes de ejecutar |
-| **Software engineering** | Tipos Pydantic, FastAPI con OpenAPI auto, 184 tests pytest con cobertura amplia, CI en GitHub Actions |
+| **Software engineering** | Tipos Pydantic, FastAPI con OpenAPI auto, 185 tests pytest con cobertura amplia, CI en GitHub Actions |
 | **ML engineering** | Eval reproducible con ground truth, metricas por categoria, MLflow tracing, degradacion a no-op cuando no hay auth |
 | **UI/UX** | Streamlit chat con tabla de resultados, chips de metadata, multi-turn session |
 
@@ -205,6 +205,7 @@ venv\Scripts\activate
 source venv/bin/activate
 
 pip install -e ".[dev]"
+# Optional (schemas grandes): pip install -e ".[vectorsearch]"
 
 cp env.example .env
 # Editar .env con tus credenciales (ver seccion Configuracion abajo)
@@ -253,7 +254,7 @@ make run-ui
 ### 5. Tests + eval
 
 ```bash
-make test         # 184 tests en ~3s, sin credenciales
+make test         # 185 tests en ~3s, sin credenciales
 # Windows (sin Make):
 python -m pytest tests/ -v
 python run_tests.py
@@ -371,7 +372,7 @@ Tests criticos en `tests/test_sql_safety.py` (69 tests):
 ## Tests
 
 ```bash
-make test           # 184 tests, ~3s, sin credenciales necesarias
+make test           # 185 tests, ~3s, sin credenciales necesarias
 # Windows (sin Make):
 python -m pytest tests/ -v
 python run_tests.py

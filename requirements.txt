@@ -15,16 +15,13 @@ streamlit==1.31.0
 
 # ----- Agent framework -----
 langgraph==0.2.0
-langchain==0.2.0
 
 # ----- LLM -----
 google-generativeai==0.3.2
 
-# ----- Databricks (target del agente) -----
+# ----- Databricks (SQL warehouse; Vector Search is extra [vectorsearch]) -----
 databricks-sdk>=0.20.0
 databricks-sql-connector>=3.0
-databricks-vectorsearch>=0.75
-databricks-ai-search>=0.78
 
 # ----- Database / SQL -----
 sqlalchemy==2.0.25

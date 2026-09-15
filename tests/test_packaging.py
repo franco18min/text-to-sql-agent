@@ -36,14 +36,22 @@ def test_runtime_pins_do_not_include_unpublished_langchain_google_genai_1_0_0():
         )
 
 
-def test_httpx_range_allows_databricks_ai_search():
-    """databricks-ai-search>=0.78 requires httpx>=0.28; a hard 0.26 pin breaks CI."""
+def test_httpx_is_not_pinned_to_0_26():
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     req = (ROOT / "requirements.txt").read_text(encoding="utf-8")
     assert "httpx==0.26.0" not in pyproject
     assert "httpx==0.26.0" not in req
-    assert "httpx>=0.28.0" in pyproject
-    assert "httpx>=0.28.0" in req
+
+
+def test_vectorsearch_sdks_are_optional_extra_not_runtime():
+    """databricks-vectorsearch 0.75 needs protobuf 5; streamlit 1.31 / Gemini 0.3.2 need protobuf<5."""
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    main, extras = text.split("[project.optional-dependencies]", 1)
+    assert "databricks-vectorsearch" not in main
+    assert "databricks-ai-search" not in main
+    assert "databricks-vectorsearch" in extras
+    assert "databricks-ai-search" in extras
+    assert 'vectorsearch' in extras
 
 
 def test_run_tests_wrapper_has_no_timeout_flag():
