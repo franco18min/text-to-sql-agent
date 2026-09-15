@@ -36,11 +36,12 @@ def test_runtime_pins_do_not_include_unpublished_langchain_google_genai_1_0_0():
         )
 
 
-def test_httpx_is_not_pinned_to_0_26():
+def test_httpx_is_pinned_for_fastapi_testclient():
+    """FastAPI 0.109 TestClient subclasses httpx.Client; 0.28+ rejects app=."""
     pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     req = (ROOT / "requirements.txt").read_text(encoding="utf-8")
-    assert "httpx==0.26.0" not in pyproject
-    assert "httpx==0.26.0" not in req
+    assert "httpx==0.26.0" in pyproject
+    assert "httpx==0.26.0" in req
 
 
 def test_vectorsearch_sdks_are_optional_extra_not_runtime():

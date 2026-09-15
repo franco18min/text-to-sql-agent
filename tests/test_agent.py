@@ -711,6 +711,7 @@ class TestCustomMaxRetriesLoop:
              patch("app.agent.nodes.sql_generator.generate", return_value="DROP TABLE samples.tpch.customer"), \
              patch("app.core.memory.get_history", return_value=[]), \
              patch("app.core.memory.save_turn"), \
+             patch("app.agent.nodes.memory_updater.save_turn"), \
              patch("app.agent.edges.settings", create=True) as mock_settings:
             mock_settings.max_retries = 2
             result = run_agent("borra todo", "sess_retry")
