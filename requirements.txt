@@ -38,7 +38,7 @@ mlflow-databricks
 # ----- Utilities -----
 tqdm==4.66.1
 tenacity==8.2.3
-httpx==0.26.0
+httpx>=0.28.0,<1
 pandas==2.1.4
 
 # ----- Testing -----

@@ -36,6 +36,16 @@ def test_runtime_pins_do_not_include_unpublished_langchain_google_genai_1_0_0():
         )
 
 
+def test_httpx_range_allows_databricks_ai_search():
+    """databricks-ai-search>=0.78 requires httpx>=0.28; a hard 0.26 pin breaks CI."""
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    req = (ROOT / "requirements.txt").read_text(encoding="utf-8")
+    assert "httpx==0.26.0" not in pyproject
+    assert "httpx==0.26.0" not in req
+    assert "httpx>=0.28.0" in pyproject
+    assert "httpx>=0.28.0" in req
+
+
 def test_run_tests_wrapper_has_no_timeout_flag():
     text = (ROOT / "run_tests.py").read_text(encoding="utf-8")
     assert "--timeout=15" not in text
