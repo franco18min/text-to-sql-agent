@@ -1,0 +1,73 @@
+schema: spec-driven
+project: text-to-sql-agent
+persistence: openspec
+strict_tdd: true
+
+context: |
+  Tech stack: Python 3.10+ (CI 3.11); FastAPI + Uvicorn; Streamlit; LangGraph + LangChain + Gemini; Databricks SQL/SDK/Vector Search; SQLAlchemy + sqlparse; Pydantic v2; MLflow; httpx; pandas.
+  Architecture: LangGraph NL2SQL graph (intent, schema introspect, generate, validate, execute, retry/give-up, format) over samples.tpch; REST in app/; UI in ui/; SQLite session memory; MLflow tracing degrades to no-op.
+  Testing: pytest + pytest-asyncio + pytest-cov; TestClient/httpx API tests; LLM/DB mocked; integration marker reserved (unused); eval via scripts/run_eval.py (not pytest).
+  Style: ruff format/check optional (Makefile + CI continue-on-error); no mypy/pyright in deps or CI.
+  Constraints: do not invent product-wide main specs here; capabilities land via later changes.
+
+testing:
+  strict_tdd: true
+  detected: "2026-09-14"
+  runner:
+    command: pytest tests/ -v
+    framework: pytest
+    fast_command: pytest tests/ -v -m "not integration"
+  layers:
+    unit:
+      available: true
+      tool: pytest (unittest.mock patches; tests/test_sql_safety.py, tests/test_agent.py)
+    integration:
+      available: true
+      tool: FastAPI TestClient + httpx; pytest marker integration (declared, no tests marked yet)
+    e2e:
+      available: false
+      tool: null
+  coverage:
+    available: true
+    command: pytest tests/ --cov=app --cov-report=term-missing --cov-report=html
+    source: app
+  quality:
+    linter:
+      available: true
+      optional: true
+      command: ruff check app/ tests/ scripts/ ui/
+    type_checker:
+      available: false
+      command: null
+    formatter:
+      available: true
+      optional: true
+      command: ruff format app/ tests/ scripts/ ui/
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Do not invent full product specs; scope one change at a time
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex LangGraph flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    tdd: true
+    test_command: pytest tests/ -v
+    notes:
+      - Follow existing code patterns in app/, ui/, tests/
+      - RED-GREEN-REFACTOR: failing test before implementation
+  verify:
+    test_command: pytest tests/ -v
+    coverage_command: pytest tests/ --cov=app --cov-report=term-missing
+    build_command: ""
+    coverage_threshold: 0
+    lint_command: ruff check app/ tests/ scripts/ ui/
+  archive:
+    - Warn before merging destructive deltas

@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "text-to-sql-agent"
+version = "1.0.0"
+description = "NL2SQL agent with LangGraph + Gemini + Databricks. Translates natural-language questions to SQL, validates with guardrails, auto-corrects on failure."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Franco Aguilera", email = "magnagg@gmail.com" },
+]
+keywords = ["text-to-sql", "nl2sql", "agent", "langgraph", "databricks", "gemini", "ai-engineer"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Runtime deps are in requirements.txt for now. Listed here too for tools
+# that only read pyproject (uv, poetry). Keep in sync.
+dependencies = [
+    "python-dotenv==1.0.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "fastapi==0.109.0",
+    "uvicorn[standard]==0.27.0",
+    "streamlit==1.31.0",
+    "langgraph==0.2.0",
+    "langchain==0.2.0",
+    "langchain-google-genai==1.0.0",
+    "google-generativeai==0.3.2",
+    "databricks-sdk>=0.20.0",
+    "databricks-sql-connector>=3.0",
+    "databricks-vectorsearch>=0.75",
+    "databricks-ai-search>=0.78",
+    "sqlalchemy==2.0.25",
+    "sqlparse==0.4.4",
+    "mlflow>=2.10",
+    "tenacity==8.2.3",
+    "httpx==0.26.0",
+    "pandas==2.1.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.4",
+    "pytest-asyncio==0.21.1",
+    "pytest-cov==4.1.0",
+    "httpx>=0.26",  # for TestClient
+]
+
+[project.urls]
+Homepage = "https://github.com/franco18min/text-to-sql-agent"
+Issues = "https://github.com/franco18min/text-to-sql-agent/issues"
+LinkedIn = "https://www.linkedin.com/in/franco-aguilera-data-engineer/"
+
+[tool.setuptools]
+packages = ["app", "app.agent", "app.agent.nodes", "app.api", "app.core", "app.models", "app.observability", "ui"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration (require Databricks/Gemini)",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if settings.DEBUG:",
+]
+show_missing = true
+precision = 1

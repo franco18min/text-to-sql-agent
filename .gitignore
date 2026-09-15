@@ -1,0 +1,61 @@
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ----- Virtual envs -----
+venv/
+.venv/
+env/
+ENV/
+
+# ----- Secrets / local config -----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials/
+
+# ----- IDE -----
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ----- Project data (DB files, eval artifacts) -----
+data/db/*.db
+data/db/*.sqlite
+data/db/*.sqlite3
+data/eval/*.json
+!data/eval/eval_set.json
+data/eval/*.csv
+mlruns/
+mlartifacts/
+
+# ----- Build / dist -----
+build/
+dist/
+*.whl
+
+# ----- Jupyter -----
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# ----- Logs -----
+*.log
+logs/
+
+# ----- Local archives -----
+*.zip
